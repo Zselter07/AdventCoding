@@ -74,5 +74,5 @@ def get_missing_seat(seats_path: str) -> Optional[int]:
 
     return None
 
-print(get_highest_seat('day04.txt')) # Exercise 1
-print(get_missing_seat('day04.txt')) # Exercise 2
+print(get_highest_seat('inputs/day4.txt')) # Exercise 1
+print(get_missing_seat('inputs/day4.txt')) # Exercise 2
