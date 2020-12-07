@@ -7,27 +7,35 @@ def read_rules(filename: str) -> List[str]:
     
     return text.split('\n')
 
-def format_rules(filename: str) -> Dict[str, List[str]]:
+def format_rules(filename: str) -> Dict[str, Dict[str, int]]:
     rules = {}
     for rule in read_rules('inputs/day7.txt'):
+        d = {}
         key, value = rule.rstrip('.').split(' contain ')
+        key = key.split(" bag")[0]
         values = [value.split(" bag")[0] for value in value.split(', ')]
         
         if 'no other' in value:
-            continue
+            rules[key] = {}
 
-        values = [(int(value.split(' ')[0]), value[2:]) for value in values]
-        rules[key.split(" bag")[0]] = values
+            continue
+        
+        for value in values:
+            val = int(value.split(' ')[0])
+            k = value[2:]
+            d[k] = val
+
+        rules[key] = d
 
     return rules
 
-def count_possible_bag_types(rules: Dict[str, List[str]], bag_names: List[str], result: List[str]):
+def count_possible_bag_types(rules: Dict[str, Dict[str, int]], bag_names: List[str], result: List[str]):
     start_result = copy.deepcopy(result)
     next_bag_names = []
 
     for curr_bag, curr_sub_bags in rules.items():
         for bag_name in bag_names:
-            if any(bag_name in substr for substr in curr_sub_bags) and curr_bag not in result:
+            if bag_name in list(curr_sub_bags.keys()) and curr_bag not in result:
                 result.append(curr_bag)
                 next_bag_names.append(curr_bag)
 
@@ -38,9 +46,18 @@ def count_possible_bag_types(rules: Dict[str, List[str]], bag_names: List[str], 
     
     return result
 
-def exercise1(filename: str) -> int:
-    rules = format_rules(filename)
-
+def calc_possible_bags(rules: Dict[str, Dict[str, int]]) -> int:
     return len(count_possible_bag_types(rules, ['shiny gold'], []))
 
-print(exercise1('inputs/day7.txt')) # Exercise 1
+def calc_bag_count(rules: Dict[str, Dict[str, int]], bag_color: str) -> int:
+    count = 0
+
+    for bag_name, bag_number in rules[bag_color].items():
+        count += bag_number + bag_number * calc_bag_count(rules, bag_name)
+
+    return count
+
+rules = format_rules('inputs/day7.txt')
+
+print(calc_possible_bags(rules)) # Exercise 1
+print(calc_bag_count(rules, 'shiny gold')) # Exercise 2
