@@ -9,7 +9,7 @@ def get_input(filename: str):
 
     return text.split('\n')
 
-def get_result(mask: str, val: str):
+def get_result(mask: str, val: str) -> int:
     result = ''
     for index, char in enumerate(mask):
         if char == 'X':
@@ -18,7 +18,7 @@ def get_result(mask: str, val: str):
         result += char
     return int(result, 2)
 
-def get_used_mems(text: List[str]):
+def get_used_mems(text: List[str]) -> Dict[int, int]:
     used_mems = {}
 
     for elem in text:
@@ -38,3 +38,4 @@ def get_total_sum_of_used_mems(text: List[str]) -> int:
 
 text = get_input('inputs/day14.txt')
 print(get_total_sum_of_used_mems(text)) # Exercise 1
+
