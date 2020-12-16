@@ -30,7 +30,7 @@ def get_neighbours(index: int, current_line: List[str], previous_line: Optional[
 
     return negihbours
 
-def get_new_arrangement(seats: List[List[str]]) -> Optional[List[List[str]]]:
+def get_new_arrangement_ecx1(seats: List[List[str]]) -> Optional[List[List[str]]]:
     import copy
 
     new_seats = []
@@ -66,11 +66,11 @@ def get_new_arrangement(seats: List[List[str]]) -> Optional[List[List[str]]]:
     if new_seats == seats_copy:
         return new_seats
     
-    return get_new_arrangement(new_seats)
+    return get_new_arrangement_ecx1(new_seats)
 
 def get_total_occupied_seats(seats: List[List[str]]) -> int:
     total = 0
-    final_groups = get_new_arrangement(seats)
+    final_groups = get_new_arrangement_ecx1(seats)
 
     for line in final_groups:
         for seat in line:
@@ -81,3 +81,6 @@ def get_total_occupied_seats(seats: List[List[str]]) -> int:
 
 seats = read_input('inputs/day11.txt')
 print(get_total_occupied_seats(seats)) # Exercise 1
+
+
+# ----- Exercise 2 ----- #
